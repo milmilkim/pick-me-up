@@ -1,19 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import Title from '@/components/scene/Title/Title';
 
 export default function Home() {
   return (
     <StyledIndex>
-      <div className='title'>
-        <h1>My Next Project</h1>
+      <div className="title">
+        <Title />
       </div>
     </StyledIndex>
   );
 }
 
-const StyledIndex = styled.div`
-padding: 5px;
-  .title {
-    color: #467b56;
-    font-size: 32px;
-  }
-`
+const StyledIndex = styled.div``;
