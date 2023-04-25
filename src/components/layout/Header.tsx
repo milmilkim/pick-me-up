@@ -1,9 +1,18 @@
 import styled from 'styled-components';
 import crystal from '@/assets/images/icon/crystal.png';
 import PixelContainer from '../common/PixelContainer';
-import Settings from '@/assets/images/icon/settings.png';
+import SettingsIcon from '@/assets/images/icon/settings.png';
+
+import { useRef } from 'react';
+import Settings from '../settings/Settings';
 
 export default function Header() {
+  const settingsRef = useRef<HTMLDialogElement>(null);
+
+  const showSettings = () => {
+    settingsRef.current?.showModal();
+  };
+
   return (
     <PixelContainer
       background='linear-gradient(
@@ -34,10 +43,11 @@ export default function Header() {
             </li>
           </ul>
         </div>
-        <div className='nes-pointer settings'>
-          <img width={30} height={30} src={Settings.src} alt='설정' />
+        <div className='nes-pointer settings' onClick={showSettings}>
+          <img width={30} height={30} src={SettingsIcon.src} alt='설정' />
         </div>
       </StyledHeader>
+	  <Settings ref={settingsRef} />
     </PixelContainer>
   );
 }
@@ -93,9 +103,8 @@ const StyledHeader = styled.header`
     width: 30px;
     height: 30px;
 
-	&:hover {
-		animation: spin 2000ms linear infinite;
-
-	}
+    &:hover {
+      animation: spin 2000ms linear infinite;
+    }
   }
 `;
