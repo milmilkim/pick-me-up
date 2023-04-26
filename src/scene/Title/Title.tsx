@@ -4,6 +4,7 @@ import useTyped from '@/hooks/useTyped';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { animated, useSpring, config } from '@react-spring/web';
+import { easeSinOut } from 'd3-ease';
 
 const Title = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);
@@ -24,7 +25,8 @@ const Title = () => {
       : 'translate(-50%, -50%) scale(0)',
     },
     config: {
-      duration: 100, // 애니메이션 지속 시간(ms 단위)
+      duration: 300, // 애니메이션 지속 시간(ms 단위)
+      easing: easeSinOut,
     },
   });
 
