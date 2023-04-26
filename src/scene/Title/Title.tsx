@@ -12,13 +12,13 @@ const Title = () => {
     setIsShowMenu(!isShowMenu);
   };
 
-  const handleMenuClick = (event) => {
+  const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation(); // 클릭 이벤트 전파를 중단시킵니다.
   };
 
   return (
     <StyledTitle background={pickmeup.src} onClick={toggleMenu}>
-      <span className="ver">0.0.1v</span>
+      <span className="ver">v.0.0.1</span>
       {isShowMenu && (
         <div className="menu-container" onClick={handleMenuClick}>
           <div className="nes-container">
