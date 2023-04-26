@@ -1,36 +1,69 @@
 import pickmeup from '@/assets/images/background/pickmeup.gif';
 import styled from 'styled-components';
 import useTyped from '@/hooks/useTyped';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { animated, useSpring } from '@react-spring/web';
 
 const Title = () => {
-  const typed = useTyped(['계속하려면 클릭하세요']);
   const [isShowMenu, setIsShowMenu] = useState(false);
+
+  const usePrevious = <T,>(value: T) => {
+    const ref = useRef<T>();
+    useEffect(() => {
+      ref.current = value;
+    }, [value]);
+    return ref.current;
+  };
+
+  const springs = useSpring({
+    from: {
+ 
+      opacity: 0,
+      width: '0',
+      height: '0',
+   
+    },
+    to: {
+
+
+      opacity: isShowMenu ? 1 : 0,
+      width: isShowMenu ? '100%' : '0',
+      height: isShowMenu ? '100%' : '0',
+
+      transform: isShowMenu
+      ? 'translate(-50%, -50%) scale(1)'
+      : 'translate(-50%, -50%) scale(0)',
+
+    },
+  });
+
+  const typed = useTyped(['계속하려면 클릭하세요']);
 
   const toggleMenu = () => {
     setIsShowMenu(!isShowMenu);
   };
 
   const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.stopPropagation(); // 클릭 이벤트 전파를 중단시킵니다.
+    if(isShowMenu) {
+      event.stopPropagation();
+    }
   };
 
   return (
     <StyledTitle background={pickmeup.src} onClick={toggleMenu}>
-      <span className="ver">v.0.0.1</span>
-      {isShowMenu && (
-        <div className="menu-container" onClick={handleMenuClick}>
-          <div className="nes-container">
-            <ul>
-              <li>
-                <Link href="/pick-char">뽑기</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      )}
-      <div className="message">{typed}</div>
+      <animated.span className='ver'>v.0.0.1</animated.span>
+
+      <div className='menu-container' onClick={handleMenuClick} >
+        <animated.div className='nes-container' style={{...springs}}>
+          <ul>
+            <li>
+              <Link href='/pick-char'>뽑기</Link>
+            </li>
+          </ul>
+        </animated.div>
+      </div>
+      <div className='message'>{typed}</div>
     </StyledTitle>
   );
 };
@@ -58,24 +91,10 @@ const StyledTitle = styled.div<{ background: string }>`
     left: 50%;
     top: 90%;
     transform: translateX(-50%) translateY(-50%);
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
   }
 
-  @keyframes fadein {
-    from {
-      width: 0;
-      height: 0;
-      top: 50%;
-      left: 50%;
-      opacity: 0;
-    }
-    to {
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 1;
-    }
-  }
 
   .menu-container {
     position: relative;
@@ -89,11 +108,14 @@ const StyledTitle = styled.div<{ background: string }>`
 
     .nes-container {
       position: absolute;
-      animation: fadein 300ms ease-in-out forwards;
-      animation-fill-mode: forwards;
       white-space: nowrap;
       overflow: hidden;
+      width: 0;
+      height: 0;
       background-color: #fff;
+      left: 50%;
+      top: 50%;
+
     }
   }
 `;
