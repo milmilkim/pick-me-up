@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Title from '@/components/scene/Title/Title';
+import Title from '@/scene/Title/Title';
 
 export default function Home() {
   return (
