@@ -1,18 +1,18 @@
-import NextAuth from 'next-auth';
+import NextAuth, { AuthOptions } from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 
 import getEnv from '@/utils/getEnv';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
 
-export const authOptions = {
+const prisma = new PrismaClient();
+export const authOptions: AuthOptions = {
   providers: [
     DiscordProvider({
       clientId: getEnv('DISCORD_CLIENT_ID'),
       clientSecret: getEnv('DISCORD_CLIENT_SECRET'),
     }),
-    /**
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
   ],
+  adapter: PrismaAdapter(prisma),
 };
 export default NextAuth(authOptions);

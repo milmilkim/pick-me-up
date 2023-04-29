@@ -39,3 +39,7 @@ next-env.d.ts
 
 
 api_key.json
+
+schema.prisma
+prisma/schema.prisma
+prisma/schema.prisma
