@@ -1,28 +1,25 @@
 import { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
+import axios from '@/utils/axios';
+import { useEffect } from 'react';
+import generateCharacterSet from '@/utils/character';
+import type { Gender } from '@/types/character';
 
 export default function Home() {
   const [charImg, setCharImg] = useState<string>('');
-  const [charType, setCharType] = useState<CharType>('g');
+  const [charType, setCharType] = useState<Gender>('g');
+  const [isLoading, setIsLoading] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
 
-  function generateRandomNumber(min = 0, max = 999) {
-    const randomNumber = Math.floor(Math.random() * (max - min + 1) + min);
-    return String(randomNumber).padStart(3, '0');
-  }
+  const getCharacterProfile = async () => {};
 
-  type CharType = 'b' | 'g';
+  const pickCharacter = async () => {};
 
-  const pickCharacter = async () => {
-    const number = generateRandomNumber(1, 53);
-    const path = charType === 'b' ? 'boy' : 'girl';
-    const character = await import(`@/assets/images/char/${path}/${charType}${number}.png`);
-    setCharImg(character.default.src);
-  };
+  const onChangeType = (e: ChangeEvent<HTMLInputElement>) => {};
 
-  const onChangeType = (e: ChangeEvent<HTMLInputElement>) => {
-    setCharType(e.target.value as CharType);
-    console.log(e.target.value);
-  };
+  useEffect(() => {
+    generateCharacterSet(charType);
+  }, []);
 
   return (
     <PickCharacter>
@@ -47,7 +44,22 @@ export default function Home() {
 
         <br />
 
-        {charImg && <img src={charImg} alt="img" width={150} height={150} />}
+        {isLoading ? (
+          <span>Loading...</span>
+        ) : (
+          profile && (
+            <div>
+              <ul>
+                <li>이름: {profile.이름}</li>
+                <li>배경: {profile.배경설정}</li>
+                <li>나이: {profile.나이} </li>
+                <li>성격: {profile.성격}</li>
+                <li>대사: {profile.대사}</li>
+              </ul>
+              <img src={charImg} alt="img" width={150} height={150} />
+            </div>
+          )
+        )}
       </header>
       <style jsx>
         {`
@@ -66,6 +78,6 @@ export default function Home() {
 
 const PickCharacter = styled.div`
   img {
-    border: 4px solid #000
+    border: 4px solid #000;
   }
-`
+`;

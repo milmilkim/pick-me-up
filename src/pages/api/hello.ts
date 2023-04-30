@@ -1,15 +1,12 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next';
+import { withWrapper } from '@/utils/api/wrapper/withWrapper';
+import { BadRequestError, CustomError } from '@/utils/api/wrapper/exceptions';
 
-type Data = {
-  [key:string]: any
-}
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  throw new BadRequestError('그냥 에러 내봄', 401);
+  return {
+    id: 1,
+  };
+};
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-
-  
-  res.status(200).json({})
-}
+export default withWrapper<{ id: number }>(handler);
