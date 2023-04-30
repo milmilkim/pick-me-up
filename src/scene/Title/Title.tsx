@@ -1,5 +1,4 @@
 import pickmeup from '@/assets/images/background/pickmeup.gif';
-import styled from 'styled-components';
 import useTyped from '@/hooks/useTyped';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -7,6 +6,7 @@ import { animated, useSpring, config } from '@react-spring/web';
 import { easeSinOut } from 'd3-ease';
 import PixelContainer from '@/components/common/PixelContainer';
 import Style from './Style';
+import styled from 'styled-components';
 
 const Title = () => {
   const [isShowMenu, setIsShowMenu] = useState(false);

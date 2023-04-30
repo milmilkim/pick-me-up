@@ -49,14 +49,29 @@ const Style = styled.div<{ background: string }>`
       .menu {
         height: 200px;
         padding: 10px;
+        margin-top: 20px;
         width: 100%;
         display: flex;
         flex-direction: column;
 
         li {
           margin-bottom: 10px;
+          position: relative;
+          margin-left: 20px;
           a {
             color: #000;
+
+            &:hover::before {
+              position: absolute;
+              top: -2px;
+              left: -20px;
+              content: '';
+              width: 2px;
+              height: 2px;
+              color: #212529;
+              box-shadow: 2px 2px, 4px 2px, 2px 4px, 4px 4px, 6px 4px, 8px 4px, 2px 6px, 4px 6px, 6px 6px, 8px 6px, 10px 6px, 2px 8px, 4px 8px, 6px 8px, 8px 8px, 10px 8px, 12px 8px, 2px 10px, 4px 10px,
+                6px 10px, 8px 10px, 10px 10px, 2px 12px, 4px 12px, 6px 12px, 8px 12px, 2px 14px, 4px 14px;
+            }
           }
         }
       }
