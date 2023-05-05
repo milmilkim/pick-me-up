@@ -135,7 +135,7 @@ body {
 }
 
 body {
-  background-color: #3F3851;
+  background-color: #3f3851;
 }
 
 html,
@@ -147,3 +147,7 @@ samp {
   font-family: 'Galmuri9';
 }
 
+html,
+body {
+  height: 100%;
+}

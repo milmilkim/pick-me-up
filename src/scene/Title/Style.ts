@@ -14,8 +14,18 @@ const Style = styled.div<{ background: string }>`
   flex-direction: column;
   color: #fff;
 
-  .ver {
-    margin-left: auto;
+  .top {
+    display: flex;
+    padding: 5px;
+
+    img {
+      width: 32px;
+      height: 32px;
+      filter: invert(100%);
+    }
+    .ver {
+      margin-left: auto;
+    }
   }
 
   .message {
