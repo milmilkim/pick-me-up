@@ -1,25 +1,45 @@
 import { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 import axios from '@/utils/axios';
-import { useEffect } from 'react';
-import generateCharacterSet from '@/utils/character';
-import type { Gender } from '@/types/character';
+import type { Gender, CharacterCard } from '@/types/character';
+import { getRandomCharacterImgId } from '@/utils/character';
 
 export default function Home() {
   const [charImg, setCharImg] = useState<string>('');
-  const [charType, setCharType] = useState<Gender>('g');
+  const [gender, setGender] = useState<Gender>('g');
   const [isLoading, setIsLoading] = useState(false);
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<CharacterCard | null>(null);
 
-  const getCharacterProfile = async () => {};
+  const getCharacterProfile = async () => {
+    const {
+      data: { data },
+    } = await axios.get('/api/random-char', {
+      params: {
+        gender,
+      },
+    });
 
-  const pickCharacter = async () => {};
+    setProfile(data);
+  };
 
-  const onChangeType = (e: ChangeEvent<HTMLInputElement>) => {};
+  const pickCharacter = async () => {
+    try {
+      setIsLoading(true);
+      await getCharacterProfile();
+      const number = getRandomCharacterImgId(1, 53);
+      const path = gender === 'b' ? 'boy' : 'girl';
+      const character = await import(`@/assets/images/char/${path}/${gender}${number}.png`);
+      setCharImg(character.default.src);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  useEffect(() => {
-    generateCharacterSet(charType);
-  }, []);
+  const onChangeType = (e: ChangeEvent<HTMLInputElement>) => {
+    setGender(e.currentTarget.value as Gender);
+  };
 
   return (
     <PickCharacter>
@@ -28,12 +48,12 @@ export default function Home() {
         <hr style={{ marginBottom: '30px' }} />
 
         <label>
-          <input type="radio" className="nes-radio" name="answer" onChange={onChangeType} value="g" checked={charType === 'g'} />
+          <input type="radio" className="nes-radio" name="answer" onChange={onChangeType} value="g" checked={gender === 'g'} />
           <span>여</span>
         </label>
 
         <label>
-          <input type="radio" className="nes-radio" name="answer" onChange={onChangeType} value="b" checked={charType === 'b'} />
+          <input type="radio" className="nes-radio" name="answer" onChange={onChangeType} value="b" checked={gender === 'b'} />
           <span>남</span>
         </label>
 
@@ -50,11 +70,20 @@ export default function Home() {
           profile && (
             <div>
               <ul>
-                <li>이름: {profile.이름}</li>
-                <li>배경: {profile.배경설정}</li>
-                <li>나이: {profile.나이} </li>
-                <li>성격: {profile.성격}</li>
-                <li>대사: {profile.대사}</li>
+                <li>이름: {profile.name}</li>
+                <li>배경: {profile.background}</li>
+                <li>나이: {profile.age} </li>
+                <li>성격: {profile.personality}</li>
+                <li>대사: {profile.dialogue}</li>
+                <li>국적: {profile.country}</li>
+                <li>좋아하는것: {profile.favorite}</li>
+                <li>생일: {profile.birthday}</li>
+                <li>별: {profile.tier}</li>
+                <li>노래: {profile.status.vocal}</li>
+                <li>춤: {profile.status.dance}</li>
+                <li>랩: {profile.status.rap}</li>
+                <li>매력: {profile.status.charm}</li>
+                <li>포지션: {profile.position}</li>
               </ul>
               <img src={charImg} alt="img" width={150} height={150} />
             </div>
