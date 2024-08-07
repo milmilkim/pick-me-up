@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import axios from '@/utils/axios';
 import type { Gender, CharacterCard } from '@/types/character';
 import { getRandomCharacterImgId } from '@/utils/character';
-import { AxiosError } from 'axios';
 
 export default function Home() {
   const [charImg, setCharImg] = useState<string>('');
