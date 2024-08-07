@@ -9,6 +9,7 @@ export const withWrapper =
       const result = await handler(req, res);
       res.status(200).json({ data: result });
     } catch (error) {
+      console.error(error);
       let message = '알 수 없는 오류';
       let statusCode = 500;
 

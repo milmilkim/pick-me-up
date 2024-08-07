@@ -3,6 +3,8 @@ import getEnv from '../getEnv';
 
 const OPENAI_KEY = getEnv('OPENAI_KEY');
 
+console.log(OPENAI_KEY);
+
 const configuration = new Configuration({
   apiKey: OPENAI_KEY,
 });

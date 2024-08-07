@@ -24,6 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     throw new BadRequestError();
   }
 
+  console.log('요청...');
   const gender = req.query.gender as Gender;
 
   if (!gender || (gender !== 'g' && gender !== 'b')) {
@@ -49,11 +50,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       Write 대사 with personality, like a cartoon character.
       write in korean 
       `;
+
+  console.log('gpt 요청 시작 ');
+
   const { data } = await gpt.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages: [{ role: 'system', content: characterPrompt }],
     temperature: 0.7,
   });
+  console.log('gpt 요청 완료');
 
   const profile = JSON.parse(data.choices[0].message?.content as string);
   if (!isGPTCharacterResponse(profile)) {

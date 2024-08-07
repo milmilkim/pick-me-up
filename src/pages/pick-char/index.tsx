@@ -3,12 +3,15 @@ import styled from 'styled-components';
 import axios from '@/utils/axios';
 import type { Gender, CharacterCard } from '@/types/character';
 import { getRandomCharacterImgId } from '@/utils/character';
+import { useAtom } from 'jotai';
+import { charAtom } from '@/state/charAtom';
 
 export default function Home() {
   const [charImg, setCharImg] = useState<string>('');
   const [gender, setGender] = useState<Gender>('g');
   const [isLoading, setIsLoading] = useState(false);
   const [profile, setProfile] = useState<CharacterCard | null>(null);
+  const [char, setChar] = useAtom(charAtom);
 
   const getCharacterProfile = async () => {
     const {
@@ -19,16 +22,19 @@ export default function Home() {
       },
     });
 
-    setProfile(data);
+    setProfile({
+      ...data,
+      imgNumber: getRandomCharacterImgId(1, 53),
+    });
   };
 
   const pickCharacter = async () => {
     try {
       setIsLoading(true);
       await getCharacterProfile();
-      const number = getRandomCharacterImgId(1, 53);
-      const path = gender === 'b' ? 'boy' : 'girl';
-      const character = await import(`@/assets/images/char/${path}/${gender}${number}.png`);
+      console.log(profile);
+      const path = profile?.gender === 'b' ? 'boy' : 'girl';
+      const character = await import(`@/assets/images/char/${path}/${gender}${profile?.imgNumber}.png`);
       setCharImg(character.default.src);
     } catch (err) {
       console.error(err);
@@ -40,6 +46,18 @@ export default function Home() {
 
   const onChangeType = (e: ChangeEvent<HTMLInputElement>) => {
     setGender(e.currentTarget.value as Gender);
+  };
+
+  const handleClickCasting = () => {
+    if (!profile) return;
+    setChar((prev) => {
+      const prevCards = prev.cards;
+      const next = [...prevCards, profile];
+
+      return {
+        cards: next,
+      };
+    });
   };
 
   return (
@@ -70,6 +88,8 @@ export default function Home() {
         ) : (
           profile && (
             <div>
+              <img src={charImg} alt="img" width={150} height={150} />
+
               <ul>
                 <li>이름: {profile.name}</li>
                 <li>배경: {profile.background}</li>
@@ -86,7 +106,12 @@ export default function Home() {
                 <li>매력: {profile.status.charm}</li>
                 <li>포지션: {profile.position}</li>
               </ul>
-              <img src={charImg} alt="img" width={150} height={150} />
+
+              <br />
+
+              <button className="nes-btn" onClick={handleClickCasting}>
+                캐스팅
+              </button>
             </div>
           )
         )}
@@ -107,6 +132,7 @@ export default function Home() {
 }
 
 const PickCharacter = styled.div`
+  padding: 20px;
   img {
     border: 4px solid #000;
   }

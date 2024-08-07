@@ -64,4 +64,5 @@ export interface CharacterCard extends CharacterInput {
   personality: string;
   dialogue: string;
   favorite: string;
+  imgNumber: number;
 }

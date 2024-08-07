@@ -73,9 +73,9 @@ const Title = () => {
         <animated.div className="menu-animation" style={{ ...springs }}>
           <PixelContainer background="#fff">
             <ul className="menu">
-              <li>
+              {/* <li>
                 <Link href="/login">로그인</Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/pick-char">뽑기</Link>
               </li>

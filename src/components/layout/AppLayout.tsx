@@ -7,12 +7,8 @@ import { useRef, useState } from 'react';
 import BgmPlayer from '../common/BgmPlayer';
 
 const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
-  const HeaderRef = useRef<HTMLDivElement>(null);
-
-  const [headerHeight, setHeaderHeight] = useState<number>(0);
-
   return (
-    <MainContainer headerHeight={88}>
+    <MainContainer>
       <BgmPlayer />
       <Head>
         <title>PICK ME UP v.0.0.1</title>
@@ -20,9 +16,6 @@ const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div ref={HeaderRef}>
-        <Header />
-      </div>
       <PixelContainer background="#ffe6bd">
         <section>{children}</section>
       </PixelContainer>
@@ -30,19 +23,16 @@ const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-const MainContainer = styled.div<{ headerHeight: number }>`
+const MainContainer = styled.div`
   max-width: 1024px;
   margin: auto;
 
+  display: flex;
+  flex-direction: column;
+
   section {
     position: relative;
-    height: calc(100vh - ${(props) => props.headerHeight}px - 10px);
-  }
-
-  @media (max-width: 800px) {
-    .container {
-      width: 100%;
-    }
+    height: 100vh;
   }
 `;
 
